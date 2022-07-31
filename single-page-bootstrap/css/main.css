@@ -1,0 +1,153 @@
+body {
+    padding: 0;
+    margin: 0;
+    text-align: justify;
+}
+
+.navbar {
+    background: #341200;
+}
+
+.nav-link, .navbar-brand {
+    color: #dac7b4;
+    cursor: pointer;
+}
+
+.nav-link {
+    margin-right: 1em !important;
+}
+
+.nav-link:hover, .navbar-brand:hover {
+    color: #cc5d3b;
+}
+
+.navbar-collapse {
+    justify-content: flex-end;
+}
+
+.background-1 {
+    background: rgba(218, 194, 144, 1.0);
+    padding: 4em 0;
+}
+
+.background-2 {
+    background: rgba(218, 194, 144, 0.5);
+    padding: 4em 0;
+}
+
+.description {
+    text-align: center;
+    max-width: 750px;
+    margin: 4em auto;
+    padding: 1em;
+    position: relative;
+    padding: 150px 0 0;
+    height: 75vh;
+}
+
+.description button {
+    border: 1px solid #cc5d3b;
+    background: #cc5d3b;
+    border-radius: 0;
+    color: #dac7b4;
+}
+
+.description button:hover {
+    border: 1px solid #341200;
+    background: #cc5d3b;
+    border-radius: 0;
+    color: #341200;
+}
+
+.more-modal {
+    background: #e4c654;
+}
+
+.features {
+    margin: 4em auto;
+    padding: 50px 0 50px;
+    position: relative;
+}
+
+.feature-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.features img {
+    margin-bottom: 16px;
+}
+
+.team-title {
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.team .card {
+    background: none;
+    border: none;
+}
+
+.team .card-title {
+    font-size: 1.3rem;
+    margin-bottom: 0;
+    text-transform: uppercase;
+}
+
+.contact {
+    max-width: 750px;
+}
+
+.contact-title {
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.contact button {
+    border: 1px solid #cc5d3b;
+    background: #cc5d3b;
+    border-radius: 0;
+    color: #dac7b4;
+}
+
+.contact button:hover {
+    border: 1px solid #341200;
+    background: #cc5d3b;
+    border-radius: 0;
+    color: #341200;
+}
+
+.page-footer {
+    background-color: #341200;
+    color: #dac7b4;
+    padding: 60px 0 30px;
+}
+
+.footer-copyright {
+    color: #dac7b4;
+    padding: 40px 0;
+}
+
+@media (max-width: 575.98px) {
+    .description {
+        position: relative;
+        padding: 0 15px;
+        text-align: center;
+    }
+
+    .description h1 {
+        font-size: 2em;
+    }
+
+    .description p {
+        font-size: 1.2rem;
+    }
+
+    .features {
+        margin: 0;
+    }
+}
