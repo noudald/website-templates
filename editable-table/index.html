@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <title>Editable table</title>
+
+        <meta charset='utf-8' />
+        <meta
+            name='viewport'
+            content='width=device-width, initial-scale=1'
+        />
+
+        <link rel='stylesheet' href='css/bootstrap.min.css' />
+        <link rel='stylesheet' href='css/main.css' />
+
+        <script src='js/jquery-3.6.0.min.js'></script>
+        <script src='js/bootstrap.min.js'></script>
+    </head>
+
+    <body>
+        <div class='container'>
+            <table id='editableTable' class='table'>
+                <tr>
+                    <th>Col 1</th>
+                    <th>Col 2</th>
+                    <th>Col 3</th>
+                    <th>Col 4</th>
+                </tr>
+                <tr id='hiddenRow' class='hidden'>
+                    <td contenteditable='true'>undef</td>
+                    <td contenteditable='true'>undef</td>
+                    <td contenteditable='true'>undef</td>
+                    <td contenteditable='true'>undef</td>
+                </tr>
+                <tr>
+                    <td contenteditable='true'>Value 1</td>
+                    <td contenteditable='true'>Value 2</td>
+                    <td contenteditable='true'>Value 3</td>
+                    <td contenteditable='true'>Value 4</td>
+                </tr>
+                <tr>
+                    <td contenteditable='true'>Value 5</td>
+                    <td contenteditable='true'>Value 6</td>
+                    <td contenteditable='true'>Value 7</td>
+                    <td contenteditable='true'>Value 8</td>
+                </tr>
+                <tr>
+                    <td contenteditable='true'>Value 9</td>
+                    <td contenteditable='true'>Value 10</td>
+                    <td contenteditable='true'>Value 11</td>
+                    <td contenteditable='true'>Value 12</td>
+                </tr>
+            </table>
+
+            <button id='exportButton' class='btn btn-primary'>Export</button>
+            <button id='addRowButton' class='btn btn-primary'>Add Row</button>
+            <button id='removeRowButton' class='btn btn-primary'>Remove Row</button>
+
+            <p id='exportData'></p>
+        </div>
+
+        <script src='js/main.js'></script>
+    </body>
+</html>
