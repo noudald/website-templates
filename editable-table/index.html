@@ -19,7 +19,7 @@
     <body>
         <div class='container'>
             <table id='editableTable' class='table table-striped table-bordered table-sm table-hover'>
-                <thead class='thead-dark'>
+                <thead class='thead-light'>
                     <tr>
                         <th class='col-md-2'>Col 1</th>
                         <th class='col-md-2'>Col 2</th>
@@ -94,8 +94,14 @@
                 </tr>
             </table>
 
-            <button id='exportButton' class='btn btn-primary'>Export</button>
-            <button id='addRowButton' class='btn btn-primary'>Add Row</button>
+            <div class='row'>
+                <div class='col-sm-6 text-center'>
+                    <button id='exportButton' class='btn btn-primary'>Export</button>
+                </div>
+                <div class='col-sm-6 text-center'>
+                    <button id='addRowButton' class='btn btn-success'>Add Row</button>
+                </div>
+            </div>
 
 
             <p id='exportData'></p>

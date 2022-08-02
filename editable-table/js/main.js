@@ -45,8 +45,5 @@ $('.removeRow').click(function(event) {
   $(this).closest('tr').remove();
 });
 
-const exportButton = document.getElementById('exportButton');
-const addRowButton = document.getElementById('addRowButton');
-
-exportButton.addEventListener('click', handleExport);
-addRowButton.addEventListener('click', handleAddRow);
+$('#exportButton').click(handleExport);
+$('#addRowButton').click(handleAddRow);
