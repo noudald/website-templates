@@ -5,7 +5,7 @@ const handleExport = () => {
   var rows = $('#editableTable tr:not(:hidden)');
   rows.each((i, row) => {
     if (i == 0) {
-      $(row).find('th').each((j, col) => {
+      $(row).find('th:not(:empty)').each((j, col) => {
         header.push($(col).text().toLowerCase());
       });
     } else {
@@ -28,26 +28,25 @@ const handleExport = () => {
 };
 
 const handleAddRow = () => {
-  const $newRow = $('#editableTable')
+  const newRow = $('#editableTable')
     .find('tr.hidden')
     .clone()
     .removeClass('hidden')
     .removeAttr('id');
 
-  $('#editableTable').append($newRow);
+  $('#editableTable').append(newRow);
+
+  $(newRow).find('.removeRow').click(function(event) {
+    $(this).closest('tr').remove();
+  });
 };
 
-const handleRemoveRow = () => {
-  const editableTable = $('#editableTable')[0];
-  if (2 < editableTable.rows.length) {
-    editableTable.rows[editableTable.rows.length - 1].remove();
-  }
-};
+$('.removeRow').click(function(event) {
+  $(this).closest('tr').remove();
+});
 
 const exportButton = document.getElementById('exportButton');
 const addRowButton = document.getElementById('addRowButton');
-const removeRowButton = document.getElementById('removeRowButton');
 
 exportButton.addEventListener('click', handleExport);
 addRowButton.addEventListener('click', handleAddRow);
-removeRowButton.addEventListener('click', handleRemoveRow);
