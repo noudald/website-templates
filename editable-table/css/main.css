@@ -7,3 +7,13 @@ body {
 .hidden {
     display: none;
 }
+
+#editableTable td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+#editableTable tr {
+    text-align: center;
+    vertical-align: middle;
+}
