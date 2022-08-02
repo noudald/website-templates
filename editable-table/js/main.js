@@ -13,7 +13,11 @@ const handleExport = () => {
       var hdata = {};
 
       header.forEach((head, i) => {
-        hdata[head] = td.eq(i).text();
+        if (i == 0) {
+          hdata[head] = td.eq(i).find('select').val();
+        } else {
+          hdata[head] = td.eq(i).text();
+        }
       });
 
       data.push(hdata);
