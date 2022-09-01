@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html>
+    <body>
+    <canvas id="canvas" width="220" height="220"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        const rate = 1 / (4 + 4 + 4 + 4); // Number of rotations per second
+
+        function drawBreathingPath(time, x0, y0, x1, y1) {
+            ctx.beginPath();
+            if (time < 0.0) {
+                ctx.lineWidth = 1.0;
+            } else if (time < 0.5) {
+                ctx.lineWidth = 5.0*time + 1.0;
+            } else if (time < 1.0) {
+                ctx.lineWidth = 5.0;
+            } else if (time < 1.5) {
+                ctx.lineWidth = 5*(1.0 - 2.0*(time - 1.0)) + 1;
+            } else {
+                ctx.lineWidth = 1.0;
+            }
+            ctx.moveTo(x0, y0);
+            ctx.lineTo(x1, y1);
+            ctx.stroke();
+
+            ctx.lineWidth = 1;
+        }
+
+        function drawPath(position) {
+            drawBreathingPath(position, 20, 20, 200, 20);
+            drawBreathingPath(position - 1.0, 200, 20, 200, 200);
+            drawBreathingPath(position - 2.0, 200, 200, 20, 200);
+            drawBreathingPath(position - 3.0, 20, 200, 20, 20);
+        }
+
+        function drawSquare(position) {
+            var x, y;
+
+            if (position < 1.0) {
+                ctx.fillStyle = 'rgb(0, 200, 0)';
+                x = 180 * position + 20;
+                y = 20;
+            } else if (position < 2.0) {
+                ctx.fillStyle = 'rgb(200, 0, 0)';
+                x = 200;
+                y = 180 * (position - 1.0) + 20;
+            } else if (position < 3.0) {
+                ctx.fillStyle = 'rgb(200, 0, 200)';
+                x = 180 * (1.0 - (position - 2.0)) + 20;
+                y = 200;
+            } else {
+                ctx.fillStyle = 'rgb(0, 0, 200)';
+                x = 20;
+                y = 180 * (1.0 - (position - 3.0)) + 20;
+            }
+
+            ctx.fillRect(x - 10, y - 10, 20, 20);
+        }
+
+        function drawText(time) {
+            ctx.font = '48px serif';
+            if (time < 1) {
+                ctx.strokeText('1', 95, 125);
+            } else if (time < 2) {
+                ctx.strokeText('2', 95, 125);
+            } else if (time < 3) {
+                ctx.strokeText('3', 95, 125);
+            } else {
+                ctx.strokeText('4', 95, 125);
+            }
+        }
+
+
+        requestAnimationFrame(renderLoop);  // rAF to start animation
+
+        function renderLoop(time) {  // rAF callback
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+            drawPath((time / 2000) % 4);
+            drawSquare((time / 2000) % 4);
+            drawText((time / 2000) % 4);
+
+            requestAnimationFrame(renderLoop);  // request next frame
+        }
+        </script>
+    </body>
+</html>
