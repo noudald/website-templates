@@ -1,15 +1,25 @@
 <!DOCTYPE HTML>
 <html>
     <style>
+        html, body {
+            height: 95%;
+        }
+
         #content {
             display: flex;
             align-items: center;
             justify-content: center;
+            height: 90%;
+        }
+
+        #box {
         }
     </style>
     <body>
         <div id="content">
-            <canvas id="canvas" width="220" height="220"></canvas>
+            <div id="box">
+                <canvas id="canvas" width="220" height="220"></canvas>
+            </div>
         </div>
 
     <script>
@@ -29,12 +39,14 @@
         const secondBoxWidth = 6;
 
         // Breathing box
-        const inhaleBreaths = 4;
-        const holdInhaleBreaths = 4;
-        const exhaleBreaths = 6;
-        const holdExhaleBreaths = 2;
-        const totalBreaths = inhaleBreaths + holdInhaleBreaths + exhaleBreaths + holdExhaleBreaths;
+        const inhaleSeconds = 4;
+        const holdInhaleSeconds = 4;
+        const exhaleSeconds = 6;
+        const holdExhaleSeconds = 2;
+        const totalSeconds = inhaleSeconds + holdInhaleSeconds + exhaleSeconds + holdExhaleSeconds;
 
+        const numberOfBoxCycles = 15;
+        const displayRemaining = 2; // Show remaining cycles after each displayRemaining cycles.
         const helpBreaths = 3;
 
         function drawBox() {
@@ -136,25 +148,75 @@
             });
         }
 
-        function writeText(text) {
+        function writeTextFade(text, opacity) {
             ctx.font = '30px serif';
             ctx.textAlign = 'center';
-            ctx.strokeText(text, x0 + boxWidth/2, y0 + boxHeight/2);
+            if (opacity < 1.0) {
+                ctx.fillStyle = 'rgba(0, 0, 0, ' + opacity + ')';
+            } else {
+                ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+            }
+            ctx.fillText(text, x0 + boxWidth/2, y0 + boxHeight/2 + 5);
+            ctx.fillStyle = 'rgba(0, 0, 0, 1)';
         };
 
-        requestAnimationFrame(renderLoop);  // rAF to start animation
+        function writeText(text) {
+            writeTextFade(text, 1.0);
+        };
 
-        function renderLoop(time) {  // rAF callback
+        requestAnimationFrame(renderLoop);
+
+        function finalLoop(time) {
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+            drawBox();
+            writeText('Done');
+
+            const seconds = time/1000 % totalSeconds;
+            if (0 <= seconds & seconds <= inhaleSeconds) {
+                hideBreath(
+                    x0,
+                    y1,
+                    'Up',
+                    holdExhaleSeconds,
+                    seconds/inhaleSeconds
+                );
+            } else {
+                return;
+            }
+
+            requestAnimationFrame(finalLoop);
+        }
+
+        function renderLoop(time) {
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
             drawBox();
 
-            const seconds = time/1000 % totalBreaths;
-            const numberOfBreaths = Math.floor(time/1000/totalBreaths);
+            const seconds = time/1000 % totalSeconds;
+            const numberOfBreaths = Math.floor(time/1000/totalSeconds);
+            const remaining = numberOfBoxCycles - numberOfBreaths;
 
-            if (0 <= seconds & seconds <= inhaleBreaths) {
+            if (remaining == 0) {
+                requestAnimationFrame(finalLoop);
+                return;
+            }
+
+            if (0 <= seconds & seconds <= inhaleSeconds) {
                 if (numberOfBreaths < helpBreaths) {
-                    writeText('Inhale');
+                    writeText('Inhale', seconds);
+                } else if (remaining == 1) {
+                    if (seconds < inhaleSeconds - 1) {
+                        writeTextFade('Last one', seconds);
+                    } else {
+                        writeTextFade('Last one', inhaleSeconds - seconds);
+                    }
+                } else if (remaining % displayRemaining == 0) {
+                    if (seconds < inhaleSeconds - 1) {
+                        writeTextFade(remaining + ' left', seconds);
+                    } else {
+                        writeTextFade(remaining + ' left', inhaleSeconds - seconds);
+                    }
                 }
 
                 if (numberOfBreaths > 0) {
@@ -162,18 +224,18 @@
                         x0,
                         y1,
                         'Up',
-                        holdExhaleBreaths,
-                        seconds/inhaleBreaths
+                        holdExhaleSeconds,
+                        seconds/inhaleSeconds
                     );
                 }
                 drawBreath(
                     x0,
                     y0,
                     'Right',
-                    inhaleBreaths,
+                    inhaleSeconds,
                     seconds
                 );
-            } else if (inhaleBreaths <= seconds && seconds <= inhaleBreaths + holdInhaleBreaths) {
+            } else if (inhaleSeconds <= seconds && seconds <= inhaleSeconds + holdInhaleSeconds) {
                 if (numberOfBreaths < helpBreaths) {
                     writeText('Hold');
                 }
@@ -182,18 +244,18 @@
                     x0,
                     y0,
                     'Right',
-                    inhaleBreaths,
-                    (seconds - inhaleBreaths)/holdInhaleBreaths
+                    inhaleSeconds,
+                    (seconds - inhaleSeconds)/holdInhaleSeconds
                 );
                 drawBreath(
                     x1,
                     y0,
                     'Down',
-                    holdInhaleBreaths,
-                    seconds - inhaleBreaths
+                    holdInhaleSeconds,
+                    seconds - inhaleSeconds
                 );
-            } else if (inhaleBreaths + holdInhaleBreaths <= seconds
-                    && seconds <= inhaleBreaths + holdInhaleBreaths + exhaleBreaths) {
+            } else if (inhaleSeconds + holdInhaleSeconds <= seconds
+                    && seconds <= inhaleSeconds + holdInhaleSeconds + exhaleSeconds) {
                 if (numberOfBreaths < helpBreaths) {
                     writeText('Exhale');
                 }
@@ -201,37 +263,41 @@
                     x1,
                     y0,
                     'Down',
-                    holdInhaleBreaths,
-                    (seconds - inhaleBreaths - holdInhaleBreaths)/exhaleBreaths
+                    holdInhaleSeconds,
+                    (seconds - inhaleSeconds - holdInhaleSeconds)/exhaleSeconds
                 );
                 drawBreath(
                     x1,
                     y1,
                     'Left',
-                    exhaleBreaths,
-                    seconds - inhaleBreaths - holdInhaleBreaths
+                    exhaleSeconds,
+                    seconds - inhaleSeconds - holdInhaleSeconds
                 );
             } else {
                 if (numberOfBreaths < helpBreaths) {
-                    writeText('Hold');
+                    if (numberOfBreaths + 1 == helpBreaths && seconds > totalSeconds - 1) {
+                        writeTextFade('Hold', totalSeconds - seconds);
+                    } else {
+                        writeText('Hold');
+                    }
                 }
                 hideBreath(
                     x1,
                     y1,
                     'Left',
-                    exhaleBreaths,
-                    (seconds - inhaleBreaths - holdInhaleBreaths - exhaleBreaths)/holdExhaleBreaths
+                    exhaleSeconds,
+                    (seconds - inhaleSeconds - holdInhaleSeconds - exhaleSeconds)/holdExhaleSeconds
                 );
                 drawBreath(
                     x0,
                     y1,
                     'Up',
-                    holdExhaleBreaths,
-                    seconds - inhaleBreaths - holdInhaleBreaths - exhaleBreaths
+                    holdExhaleSeconds,
+                    seconds - inhaleSeconds - holdInhaleSeconds - exhaleSeconds
                 );
             }
 
-            requestAnimationFrame(renderLoop);  // request next frame
+            requestAnimationFrame(renderLoop);
         }
         </script>
     </body>
