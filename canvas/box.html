@@ -170,18 +170,19 @@
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
             drawBox();
-            writeText('Done');
 
             const seconds = time/1000 % totalSeconds;
-            if (0 <= seconds & seconds <= inhaleSeconds) {
+            if (seconds <= 1) {
+                writeTextFade('Congratulations', seconds);
                 hideBreath(
-                    x0,
-                    y1,
-                    'Up',
-                    holdExhaleSeconds,
-                    seconds/inhaleSeconds
+                    x1, y1, 'Left', holdExhaleSeconds, seconds
                 );
+            } else if (seconds <= 2) {
+                writeTextFade('Congratulations', 2 - seconds);
+            } else if (seconds <= 3) {
+                writeTextFade('Done', seconds - 2);
             } else {
+                writeText('Done');
                 return;
             }
 
@@ -189,11 +190,6 @@
         }
 
         function renderLoop(time) {
-            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
-            drawBox();
-
-            const seconds = time/1000 % totalSeconds;
             const numberOfBreaths = Math.floor(time/1000/totalSeconds);
             const remaining = numberOfBoxCycles - numberOfBreaths;
 
@@ -201,6 +197,12 @@
                 requestAnimationFrame(finalLoop);
                 return;
             }
+
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+            drawBox();
+
+            const seconds = time/1000 % totalSeconds;
 
             if (0 <= seconds & seconds <= inhaleSeconds) {
                 if (numberOfBreaths < helpBreaths) {
