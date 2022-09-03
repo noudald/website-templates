@@ -223,19 +223,11 @@
 
                 if (numberOfBreaths > 0) {
                     hideBreath(
-                        x0,
-                        y1,
-                        'Up',
-                        holdExhaleSeconds,
-                        seconds/inhaleSeconds
+                        x1, y1, 'Left', holdExhaleSeconds, seconds/inhaleSeconds
                     );
                 }
                 drawBreath(
-                    x0,
-                    y0,
-                    'Right',
-                    inhaleSeconds,
-                    seconds
+                    x0, y1, 'Up', inhaleSeconds, seconds
                 );
             } else if (inhaleSeconds <= seconds && seconds <= inhaleSeconds + holdInhaleSeconds) {
                 if (numberOfBreaths < helpBreaths) {
@@ -243,18 +235,10 @@
                 }
 
                 hideBreath(
-                    x0,
-                    y0,
-                    'Right',
-                    inhaleSeconds,
-                    (seconds - inhaleSeconds)/holdInhaleSeconds
+                    x0, y1, 'Up', inhaleSeconds, (seconds - inhaleSeconds)/holdInhaleSeconds
                 );
                 drawBreath(
-                    x1,
-                    y0,
-                    'Down',
-                    holdInhaleSeconds,
-                    seconds - inhaleSeconds
+                    x0, y0, 'Right', holdInhaleSeconds, seconds - inhaleSeconds
                 );
             } else if (inhaleSeconds + holdInhaleSeconds <= seconds
                     && seconds <= inhaleSeconds + holdInhaleSeconds + exhaleSeconds) {
@@ -262,18 +246,10 @@
                     writeText('Exhale');
                 }
                 hideBreath(
-                    x1,
-                    y0,
-                    'Down',
-                    holdInhaleSeconds,
-                    (seconds - inhaleSeconds - holdInhaleSeconds)/exhaleSeconds
+                    x0, y0, 'Right', holdInhaleSeconds, (seconds - inhaleSeconds - holdInhaleSeconds)/exhaleSeconds
                 );
                 drawBreath(
-                    x1,
-                    y1,
-                    'Left',
-                    exhaleSeconds,
-                    seconds - inhaleSeconds - holdInhaleSeconds
+                    x1, y0, 'Down', exhaleSeconds, seconds - inhaleSeconds - holdInhaleSeconds
                 );
             } else {
                 if (numberOfBreaths < helpBreaths) {
@@ -284,18 +260,10 @@
                     }
                 }
                 hideBreath(
-                    x1,
-                    y1,
-                    'Left',
-                    exhaleSeconds,
-                    (seconds - inhaleSeconds - holdInhaleSeconds - exhaleSeconds)/holdExhaleSeconds
+                    x1, y0, 'Down', exhaleSeconds, (seconds - inhaleSeconds - holdInhaleSeconds - exhaleSeconds)/holdExhaleSeconds
                 );
                 drawBreath(
-                    x0,
-                    y1,
-                    'Up',
-                    holdExhaleSeconds,
-                    seconds - inhaleSeconds - holdInhaleSeconds - exhaleSeconds
+                    x1, y1, 'Left', holdExhaleSeconds, seconds - inhaleSeconds - holdInhaleSeconds - exhaleSeconds
                 );
             }
 
