@@ -1,0 +1,262 @@
+<!DOCTYPE HTML>
+<html>
+    <body>
+    <canvas id="canvas" width="220" height="220"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Global configuration
+
+        // Upper left and lower right points of box.
+        const x0 = 20, y0 = 20, x1 = 200, y1 = 200;
+
+        const boxWidth = x1 - x0;
+        const boxHeight = y1 - y0;
+
+        // Second box sizes
+        const secondBoxHeight = 20;
+        const secondBoxWidth = 6;
+
+        // Breathing box
+        const inhaleBreaths = 3;
+        const holdInhaleBreaths = 2;
+        const exhaleBreaths = 3;
+        const holdExhaleBreaths = 2;
+        const totalBreaths = inhaleBreaths + holdInhaleBreaths + exhaleBreaths + holdExhaleBreaths;
+
+        var initialRun = true;
+
+        function drawBox() {
+            ctx.beginPath();
+            ctx.moveTo(x0, y0);
+            ctx.lineTo(x1, y0);
+            ctx.lineTo(x1, y1);
+            ctx.lineTo(x0, y1);
+            ctx.lineTo(x0, y0);
+            ctx.stroke();
+        }
+
+        function drawSecondBox(px, py, orientation, time) {
+            if (orientation == 'Horizontal') {
+                ctx.fillRect(
+                    px - secondBoxWidth/2,
+                    py - time*secondBoxHeight/2,
+                    secondBoxWidth,
+                    time*secondBoxHeight
+                );
+            } else if (orientation == 'Vertical') {
+                ctx.fillRect(
+                    px - time*secondBoxHeight/2,
+                    py - secondBoxWidth/2,
+                    time*secondBoxHeight,
+                    secondBoxWidth,
+                );
+            }
+        }
+
+        function drawBreath(startx, starty, orientation, numberOfBreaths, time) {
+            if (orientation == 'Right') {
+                const distancePerSecondBox = boxWidth / (numberOfBreaths + 1);
+                [...Array(numberOfBreaths).keys()].map((i) => {
+                    if (i <= time - 1) {
+                        drawSecondBox(
+                            startx + (i + 1)*distancePerSecondBox,
+                            starty,
+                            'Horizontal',
+                            1.0
+                        );
+                    } else if (0 <= time - i && time - i <= 1.0) {
+                        drawSecondBox(
+                            startx + (i + 1)*distancePerSecondBox,
+                            starty,
+                            'Horizontal',
+                            time - i
+                        );
+                    }
+                });
+            } else if (orientation == 'Down') {
+                const distancePerSecondBox = boxHeight / (numberOfBreaths + 1);
+                [...Array(numberOfBreaths).keys()].map((i) => {
+                    if (i <= time - 1) {
+                        drawSecondBox(
+                            startx,
+                            starty + (i + 1)*distancePerSecondBox,
+                            'Vertical',
+                            1.0
+                        );
+                    } else if (0 <= time - i && time - i <= 1.0) {
+                        drawSecondBox(
+                            startx,
+                            starty + (i + 1)*distancePerSecondBox,
+                            'Vertical',
+                            time - i
+                        );
+                    }
+                });
+            } else if (orientation == 'Left') {
+                const distancePerSecondBox = boxWidth / (numberOfBreaths + 1);
+                [...Array(numberOfBreaths).keys()].map((i) => {
+                    if (i <= time - 1) {
+                        drawSecondBox(
+                            startx - (i + 1)*distancePerSecondBox,
+                            starty,
+                            'Horizontal',
+                            1.0
+                        );
+                    } else if (0 <= time - i && time - i <= 1.0) {
+                        drawSecondBox(
+                            startx - (i + 1)*distancePerSecondBox,
+                            starty,
+                            'Horizontal',
+                            time - i
+                        );
+                    }
+                });
+            } else if (orientation == 'Up') {
+                const distancePerSecondBox = boxHeight / (numberOfBreaths + 1);
+                [...Array(numberOfBreaths).keys()].map((i) => {
+                    if (i <= time - 1) {
+                        drawSecondBox(
+                            startx,
+                            starty - (i + 1)*distancePerSecondBox,
+                            'Vertical',
+                            1.0
+                        );
+                    } else if (0 <= time - i && time - i <= 1.0) {
+                        drawSecondBox(
+                            startx,
+                            starty - (i + 1)*distancePerSecondBox,
+                            'Vertical',
+                            time - i
+                        );
+                    }
+                });
+            }
+        }
+
+        function hideBreath(startx, starty, orientation, numberOfBreaths, time) {
+            if (orientation == 'Right') {
+                const distancePerSecondBox = boxWidth / (numberOfBreaths + 1);
+                [...Array(numberOfBreaths).keys()].map((i) => {
+                    drawSecondBox(
+                        startx + (i + 1)*distancePerSecondBox,
+                        starty,
+                        'Horizontal',
+                        1.0 - time,
+                    );
+                });
+            } else if (orientation == 'Down') {
+                const distancePerSecondBox = boxHeight / (numberOfBreaths + 1);
+                [...Array(numberOfBreaths).keys()].map((i) => {
+                    drawSecondBox(
+                        startx,
+                        starty + (i + 1)*distancePerSecondBox,
+                        'Vertical',
+                        1.0 - time,
+                    );
+                });
+            } else if (orientation == 'Left') {
+                const distancePerSecondBox = boxWidth / (numberOfBreaths + 1);
+                [...Array(numberOfBreaths).keys()].map((i) => {
+                    drawSecondBox(
+                        startx - (i + 1)*distancePerSecondBox,
+                        starty,
+                        'Horizontal',
+                        1.0 - time,
+                    );
+                });
+            } else if (orientation == 'Up') {
+                const distancePerSecondBox = boxHeight / (numberOfBreaths + 1);
+                [...Array(numberOfBreaths).keys()].map((i) => {
+                    drawSecondBox(
+                        startx,
+                        starty - (i + 1)*distancePerSecondBox,
+                        'Vertical',
+                        1.0 - time,
+                    );
+                });
+            }
+        }
+
+        requestAnimationFrame(renderLoop);  // rAF to start animation
+
+        function renderLoop(time) {  // rAF callback
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+            drawBox();
+
+            const seconds = time/1000 % totalBreaths;
+
+            if (0 <= seconds & seconds <= inhaleBreaths) {
+                if (!initialRun) {
+                    hideBreath(
+                        x0,
+                        y1,
+                        'Up',
+                        holdExhaleBreaths,
+                        seconds/inhaleBreaths
+                    );
+                }
+                drawBreath(
+                    x0,
+                    y0,
+                    'Right',
+                    inhaleBreaths,
+                    seconds
+                );
+            } else if (inhaleBreaths <= seconds && seconds <= inhaleBreaths + holdInhaleBreaths) {
+                hideBreath(
+                    x0,
+                    y0,
+                    'Right',
+                    inhaleBreaths,
+                    (seconds - inhaleBreaths)/holdInhaleBreaths
+                );
+                drawBreath(
+                    x1,
+                    y0,
+                    'Down',
+                    holdInhaleBreaths,
+                    seconds - inhaleBreaths
+                );
+            } else if (inhaleBreaths + holdInhaleBreaths <= seconds
+                    && seconds <= inhaleBreaths + holdInhaleBreaths + exhaleBreaths) {
+                hideBreath(
+                    x1,
+                    y0,
+                    'Down',
+                    holdInhaleBreaths,
+                    (seconds - inhaleBreaths - holdInhaleBreaths)/exhaleBreaths
+                );
+                drawBreath(
+                    x1,
+                    y1,
+                    'Left',
+                    exhaleBreaths,
+                    seconds - inhaleBreaths - holdInhaleBreaths
+                );
+            } else {
+                hideBreath(
+                    x1,
+                    y1,
+                    'Left',
+                    exhaleBreaths,
+                    (seconds - inhaleBreaths - holdInhaleBreaths - exhaleBreaths)/holdExhaleBreaths
+                );
+                drawBreath(
+                    x0,
+                    y1,
+                    'Up',
+                    holdExhaleBreaths,
+                    seconds - inhaleBreaths - holdInhaleBreaths - exhaleBreaths
+                );
+                initialRun = false;
+            }
+
+            requestAnimationFrame(renderLoop);  // request next frame
+        }
+        </script>
+    </body>
+</html>
