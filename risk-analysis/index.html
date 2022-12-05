@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <title>Risk Intelligence</title>
+
+        <meta charset='utf-8' />
+        <meta
+            name='viewport'
+            content='width=device-width, initial-scale=1'
+        />
+    </head>
+
+    <body>
+        <div class='container'>
+            <p id='question'>Question</p>
+
+            <form name='answerForm'>
+                <input type='radio' name='answer' id='0' value='0'/>
+                <label for='0'>0%</label>
+
+                <input type='radio' name='answer' id='1' value='1'/>
+                <label for='1'>10%</label>
+
+                <input type='radio' name='answer' id='2' value='2'/>
+                <label for='2'>20%</label>
+
+                <input type='radio' name='answer' id='3' value='3'/>
+                <label for='3'>30%</label>
+
+                <input type='radio' name='answer' id='4' value='4'/>
+                <label for='4'>40%</label>
+
+                <input type='radio' name='answer' id='5' value='5'/>
+                <label for='5'>50%</label>
+
+                <input type='radio' name='answer' id='6' value='6'/>
+                <label for='6'>60%</label>
+
+                <input type='radio' name='answer' id='7' value='7'/>
+                <label for='7'>70%</label>
+
+                <input type='radio' name='answer' id='8' value='8'/>
+                <label for='8'>80%</label>
+
+                <input type='radio' name='answer' id='9' value='9'/>
+                <label for='9'>90%</label>
+
+                <input type='radio' name='answer' id='10' value='10'/>
+                <label for='10'>100%</label>
+            </form>
+        </div>
+
+        <style>
+            #calibrationDiv {
+                display: inline-block;
+                position: relative;
+                width: 800px !important;
+                height: 800px !important;
+            }
+        </style>
+
+        <div id='calibrationDiv'>
+            <canvas id="calibrationChart" height='100%' width='100%'></canvas>
+        </div>
+
+        <script src="chart.js"></script>
+        <script src='questions.js'></script>
+        <script src='calibration.js'></script>
+        <script src='main.js'></script>
+    </body>
+
+</html>
