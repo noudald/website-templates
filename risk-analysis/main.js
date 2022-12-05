@@ -38,6 +38,8 @@ for (var i = 0; i < answer.length; i++) {
     });
 
     chart.data.datasets[1].data = calibration;
+    chart.data.datasets[2].data = calibration;
+    chart.data.datasets[3].data = calibration;
     chart.update();
 
     currentQuestionIndex++;

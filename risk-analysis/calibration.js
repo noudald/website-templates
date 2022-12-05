@@ -28,3 +28,19 @@ chart.data.datasets.push({
   backgroundColor: '#ff6384',
 });
 chart.update();
+
+chart.data.datasets.push({
+  label: "Min",
+  backgroundColor: 'rgba(255, 99, 132, 0.6)',
+  borderColor: 'rgba(255, 99, 132, 1.0)',
+  fill: false,
+  data: [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+});
+chart.data.datasets.push({
+  label: "Max",
+  backgroundColor: 'rgba(255, 99, 132, 0.6)',
+  borderColor: 'rgba(255, 99, 132, 1.0)',
+  fill: '-1',
+  data: [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+});
+chart.update();
