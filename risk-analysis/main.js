@@ -13,7 +13,7 @@ function sampleWithReplacement(arr) {
 }
 
 
-function bootstrapResults(results, nsim=10000) {
+function bootstrapResults(results, nsim=100) {
   const bsResults = [
     [], [], [], [], [], [], [], [], [], [], []
   ];
@@ -31,7 +31,26 @@ function bootstrapResults(results, nsim=10000) {
     }
   }
 
-  console.log(bsResults);
+  const bsQ025 = new Array(11);
+  const bsQ975 = new Array(11);
+  const bsMedian = new Array(11);
+
+  for (var j = 0; j <= 10; j++) {
+    bsResults[j].sort();
+
+    const n = bsResults[j].length;
+    if (n == 0) {
+      bsQ025[j] = j/10.0;
+      bsQ975[j] = j/10.0;
+      bsMedian[j] = j/10.0;
+    } else {
+      bsQ025[j] = bsResults[j][Math.floor(0.025 * n)];
+      bsQ975[j] = bsResults[j][Math.floor(0.975 * n)];
+      bsMedian[j] = bsResults[j][Math.floor(0.5 * n)];
+    }
+  }
+
+  return [bsQ025, bsMedian, bsQ975];
 }
 
 
@@ -71,11 +90,11 @@ for (var i = 0; i < answer.length; i++) {
       }
     });
 
-    bootstrapResults(results);
+    const [bsQ025, bsMedian, bsQ975] = bootstrapResults(results);
 
-    chart.data.datasets[1].data = calibration;
-    chart.data.datasets[2].data = calibration;
-    chart.data.datasets[3].data = calibration;
+    chart.data.datasets[1].data = bsMedian;
+    chart.data.datasets[2].data = bsQ025;
+    chart.data.datasets[3].data = bsQ975;
     chart.update();
 
     currentQuestionIndex++;
